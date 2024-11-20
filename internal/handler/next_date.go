@@ -7,12 +7,24 @@ import (
 	"time"
 )
 
+const DataToday = "20240126"
+
 func (h *Handler) NextDate(w http.ResponseWriter, r *http.Request) {
-	date, err := nextdate.NextDate(time.Now(), "dateStr", "repeat")
+	layout := "20060102"
+	nowTime, _ := time.Parse(layout, DataToday)
+	dateStr := r.FormValue("date")
+	repeatStr := r.FormValue("repeat")
+
+	if dateStr == "" {
+		dateStr = DataToday
+	} 
+
+	
+
+	date, err := nextdate.NextDate(nowTime, dateStr, repeatStr)
 	if err != nil {
-		//TODO вернуть ошибку
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 	fmt.Fprintln(w, date)
-	w.Write([]byte("date"))
-
 }

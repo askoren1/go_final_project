@@ -3,12 +3,15 @@ package handler
 import (
 	"net/http"
 	"encoding/json"
+	"fmt"
 )
 
 type Task struct {
-     Title string `json:"title"`
-     Date string `json:"data"`
 
+	 Date string `json:"data"`
+     Title string `json:"title"`     
+	 Comment string `json:"comment"`
+	 Repeat string `json:"repeat"`
 }
 
 func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
@@ -16,19 +19,17 @@ func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	//Провеверка на входящие данные
-	// // Если ошибка, возвращаем 404 ошибку
-	// if err := h.repo.AddTask(); err != nil {
-	// 	// Возвращаем 500 ошибку
 
-	// }
-    // // Возвращаем OK
-	result, err := json.Marshal(t)
+	id, err := h.repo.AddTask(t.Date, t.Title, t.Comment, t.Repeat)
+	
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+ 		http.Error(w, err.Error(), http.StatusBadRequest)
+ 		return
 	}
-	w.Write(result)
 
 
+     response := map[string]string{"id": fmt.Sprintf("%d", id)}
+	 w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	 json.NewEncoder(w).Encode(response)
 
 }

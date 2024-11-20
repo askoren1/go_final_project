@@ -17,18 +17,15 @@ import (
 func main() {
 
 	db := db.New()  //Инициализируем базу данных
-	fmt.Println("Указатель на открытое и проверенное соединение с базой данных:", db)
 	repo := repository.New(db) //Создаем репозиторий, который отвечает за взаимодействие с базой данных
-	fmt.Println("Указатель на новую структуру Repository:", repo)
 	migration(repo)
 
 	handler := handler.New(repo)
-	fmt.Println("Указатель на созданный экземпляр Handler:", handler)
 
 	r := chi.NewRouter()
 	r.Post("/api/task", handler.AddTask)
 	r.Get("/api/tasks", handler.GetList)
-	r.Get("/api/next-date", handler.NextDate)
+	r.Get("/api/nextdate", handler.NextDate)
 	
 
 	r.Handle("/*", http.FileServer(http.Dir("./web")))

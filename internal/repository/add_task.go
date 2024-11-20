@@ -1,12 +1,20 @@
 package repository
 
-func (r *Repository) AddTask() error {
-	query := `;`
+func (r *Repository) AddTask(date, title, comment, repeat string) (int64, error) {
+	query := `INSERT INTO scheduler (date, title, comment, repeat) VALUES ($1, $2, $3, $4)`
 
-	if _, err := r.db.Exec(query); err != nil {
-		return err
+	res, err := r.db.Exec(query, date, title, comment, repeat) 
+	
+	if err != nil {
+		return 0, err
 	}
- return nil
+
+	id, err := res.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+ return id, nil
 }
 
 
