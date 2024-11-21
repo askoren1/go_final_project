@@ -7,16 +7,16 @@ import (
 	"time"
 )
 
-const DataToday = "20240126"
+const DateToday = "20240126"
 
 func (h *Handler) NextDate(w http.ResponseWriter, r *http.Request) {
 	layout := "20060102"
-	nowTime, _ := time.Parse(layout, DataToday)
+	nowTime, _ := time.Parse(layout, DateToday)
 	dateStr := r.FormValue("date")
 	repeatStr := r.FormValue("repeat")
 
 	if dateStr == "" {
-		dateStr = DataToday
+		dateStr = DateToday
 	} 
 
 	
