@@ -1,16 +1,14 @@
 package repository
 
-import ("fmt")
+import (
 
-type Task2 struct {
-	ID    string `json:"id"`
-	Date    string `json:"date"`
-	Title   string `json:"title"`
-	Comment string `json:"comment"`
-	Repeat  string `json:"repeat"`
-}
+	 "fmt"
+     "github.com/askoren1/go_final_project/internal/models"
 
-func (r *Repository) GetList() ([]Task2, error) {
+)
+
+
+func (r *Repository) GetList() ([]models.Task2, error) {
 	query := `SELECT id, date, title, comment, repeat FROM scheduler ORDER BY date ASC;`
 	rows, err := r.db.Query(query)
 	if err != nil {
@@ -18,10 +16,10 @@ func (r *Repository) GetList() ([]Task2, error) {
 	}
 	defer rows.Close()
 
-var tasks []Task2
+var tasks []models.Task2
 
 for rows.Next() {
-	task := Task2{}
+	task := models.Task2{}
 
 	err := rows.Scan(&task.ID, &task.Date, &task.Title, &task.Comment, &task.Repeat)
 	if err != nil {

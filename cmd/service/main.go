@@ -26,6 +26,7 @@ func main() {
 	r.Post("/api/task", handler.AddTask)
 	r.Get("/api/tasks", handler.GetList)
 	r.Get("/api/nextdate", handler.NextDate)
+	r.Get("/api/task", handler.GetTask)
 	
 
 	r.Handle("/*", http.FileServer(http.Dir("./web")))

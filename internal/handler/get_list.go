@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 	"encoding/json"
-	"github.com/askoren1/go_final_project/internal/repository"
+	"github.com/askoren1/go_final_project/internal/models"
 	"log"
 )
 
@@ -20,11 +20,11 @@ func (h *Handler) GetList(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if tasks == nil {
-		tasks = []repository.Task2{}
+		tasks = []models.Task2{}
 	}
 
 	resp := struct {
-		Tasks []repository.Task2 `json:"tasks"`
+		Tasks []models.Task2 `json:"tasks"`
 	}{
 		Tasks: tasks,
 	}
