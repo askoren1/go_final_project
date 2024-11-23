@@ -1,12 +1,40 @@
 package repository
 
-//import ("fmt")
+import ("fmt")
 
-func (r *Repository) GetList() error {
-	query := `SELECT * FROM scheduler;`
+type Task2 struct {
+	ID    string `json:"id"`
+	Date    string `json:"date"`
+	Title   string `json:"title"`
+	Comment string `json:"comment"`
+	Repeat  string `json:"repeat"`
+}
 
-	if _, err := r.db.Exec(query); err != nil {
-		return err
+func (r *Repository) GetList() ([]Task2, error) {
+	query := `SELECT id, date, title, comment, repeat FROM scheduler ORDER BY date ASC;`
+	rows, err := r.db.Query(query)
+	if err != nil {
+		return nil, err
 	}
- return nil
+	defer rows.Close()
+
+var tasks []Task2
+
+for rows.Next() {
+	task := Task2{}
+
+	err := rows.Scan(&task.ID, &task.Date, &task.Title, &task.Comment, &task.Repeat)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	tasks = append(tasks, task)
+}
+
+if err := rows.Err(); err != nil {
+	fmt.Println(err)
+	return nil, err
+}
+
+ return tasks, err
 }

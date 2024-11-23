@@ -2,17 +2,40 @@ package handler
 
 import (
 	"net/http"
+	"encoding/json"
+	"github.com/askoren1/go_final_project/internal/repository"
+	"log"
 )
 
 func (h *Handler) GetList(w http.ResponseWriter, r *http.Request) {
-	//Провеверка на входящие данные
-	// Если ошибка, возвращаем 404 ошибку
-	if err := h.repo.GetList(); err != nil {
-		// Возвращаем 500 ошибку
 
+	w.Header().Set("Content-Type", "application/json")
+	tasks, err := h.repo.GetList()
+
+
+	if err != nil {
+		log.Println("Error getting tasks:", err)
+		http.Error(w, `{"error": "Ошибка получения списка задач"}`, http.StatusInternalServerError)
+		return
 	}
-    // Возвращаем OK
-	w.Write([]byte("OK"))
+
+	if tasks == nil {
+		tasks = []repository.Task2{}
+	}
+
+	resp := struct {
+		Tasks []repository.Task2 `json:"tasks"`
+	}{
+		Tasks: tasks,
+	}
+
+	err = json.NewEncoder(w).Encode(resp)
+
+	if err != nil {
+		log.Println("Error encoding JSON:", err)
+		http.Error(w, `{"error": "Ошибка кодирования JSON"}`, http.StatusInternalServerError)
+		return
+	}
 
 }
 
