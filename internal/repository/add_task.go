@@ -3,8 +3,8 @@ package repository
 func (r *Repository) AddTask(date, title, comment, repeat string) (int64, error) {
 	query := `INSERT INTO scheduler (date, title, comment, repeat) VALUES ($1, $2, $3, $4)`
 
-	res, err := r.db.Exec(query, date, title, comment, repeat) 
-	
+	res, err := r.db.Exec(query, date, title, comment, repeat)
+
 	if err != nil {
 		return 0, err
 	}
@@ -14,8 +14,5 @@ func (r *Repository) AddTask(date, title, comment, repeat string) (int64, error)
 		return 0, err
 	}
 
- return id, nil
+	return id, nil
 }
-
-
-

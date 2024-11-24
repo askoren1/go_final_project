@@ -2,8 +2,8 @@ package handler
 
 import (
 	"fmt"
-	"net/http"
 	nextdate "github.com/askoren1/go_final_project/internal/next_date"
+	"net/http"
 	"time"
 )
 
@@ -17,9 +17,7 @@ func (h *Handler) NextDate(w http.ResponseWriter, r *http.Request) {
 
 	if dateStr == "" {
 		dateStr = DateToday
-	} 
-
-	
+	}
 
 	date, err := nextdate.NextDate(nowTime, dateStr, repeatStr)
 	if err != nil {

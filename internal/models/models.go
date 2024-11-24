@@ -7,4 +7,3 @@ type Task2 struct {
 	Comment string `json:"comment"`
 	Repeat  string `json:"repeat"`
 }
-

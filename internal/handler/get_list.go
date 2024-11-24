@@ -1,17 +1,16 @@
 package handler
 
 import (
-	"net/http"
 	"encoding/json"
 	"github.com/askoren1/go_final_project/internal/models"
 	"log"
+	"net/http"
 )
 
 func (h *Handler) GetList(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	tasks, err := h.repo.GetList()
-
 
 	if err != nil {
 		log.Println("Error getting tasks:", err)
@@ -38,5 +37,3 @@ func (h *Handler) GetList(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
-
-

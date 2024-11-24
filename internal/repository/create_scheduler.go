@@ -1,6 +1,8 @@
 package repository
 
-import ("fmt")
+import (
+	"fmt"
+)
 
 func (r *Repository) CreateScheduler() error {
 	query := `CREATE TABLE IF NOT EXISTS scheduler (
@@ -17,8 +19,9 @@ func (r *Repository) CreateScheduler() error {
 
 	return nil
 }
-     //id INTEGER PRIMARY KEY AUTOINCREMENT - Целочисленный первичный ключ с автоинкрементом
-	 //date CHAR(8) - Дата в формате YYYYMMDD (строка фиксированной длины 8 символов)
-	 //title VARCHAR(256) - Заголовок задачи (строка переменной длины до 256 символов)
-	 //comment TEXT - Комментарий к задаче (текстовое поле)
-	 //repeat VARCHAR(128) - Правило повторения задачи (строка переменной длины до 128 символов)
+
+//id INTEGER PRIMARY KEY AUTOINCREMENT - Целочисленный первичный ключ с автоинкрементом
+//date CHAR(8) - Дата в формате YYYYMMDD (строка фиксированной длины 8 символов)
+//title VARCHAR(256) - Заголовок задачи (строка переменной длины до 256 символов)
+//comment TEXT - Комментарий к задаче (текстовое поле)
+//repeat VARCHAR(128) - Правило повторения задачи (строка переменной длины до 128 символов)

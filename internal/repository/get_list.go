@@ -1,12 +1,9 @@
 package repository
 
 import (
-
-	 "fmt"
-     "github.com/askoren1/go_final_project/internal/models"
-
+	"fmt"
+	"github.com/askoren1/go_final_project/internal/models"
 )
-
 
 func (r *Repository) GetList() ([]models.Task2, error) {
 	query := `SELECT id, date, title, comment, repeat FROM scheduler ORDER BY date ASC;`
@@ -16,23 +13,23 @@ func (r *Repository) GetList() ([]models.Task2, error) {
 	}
 	defer rows.Close()
 
-var tasks []models.Task2
+	var tasks []models.Task2
 
-for rows.Next() {
-	task := models.Task2{}
+	for rows.Next() {
+		task := models.Task2{}
 
-	err := rows.Scan(&task.ID, &task.Date, &task.Title, &task.Comment, &task.Repeat)
-	if err != nil {
+		err := rows.Scan(&task.ID, &task.Date, &task.Title, &task.Comment, &task.Repeat)
+		if err != nil {
+			fmt.Println(err)
+			return nil, err
+		}
+		tasks = append(tasks, task)
+	}
+
+	if err := rows.Err(); err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
-	tasks = append(tasks, task)
-}
 
-if err := rows.Err(); err != nil {
-	fmt.Println(err)
-	return nil, err
-}
-
- return tasks, err
+	return tasks, err
 }
