@@ -28,6 +28,7 @@ func main() {
 	r.Get("/api/nextdate", handler.NextDate)
 	r.Get("/api/task", handler.GetTask)
 	r.Put("/api/task", handler.UpdateTask)
+	r.Delete("/api/task", handler.DeleteTask)
 
 	r.Handle("/*", http.FileServer(http.Dir("./web")))
 	if err := http.ListenAndServe(":7540", r); err != nil {
