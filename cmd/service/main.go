@@ -29,9 +29,13 @@ func main() {
 	r.Get("/api/task", handler.GetTask)
 	r.Put("/api/task", handler.UpdateTask)
 	r.Delete("/api/task", handler.DeleteTask)
-
 	r.Handle("/*", http.FileServer(http.Dir("./web")))
-	if err := http.ListenAndServe(":7540", r); err != nil {
+
+	port := os.Getenv("TODO_PORT")
+	if port == "" {
+		port = "8080" // Порт по умолчанию
+}
+	if err := http.ListenAndServe(":"+port, r); err != nil {
 		log.Fatal(err)
 	}
 }
