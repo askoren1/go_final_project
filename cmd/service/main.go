@@ -23,6 +23,7 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Post("/api/task", handler.AddTask)
+	r.Post("/api/task/done", handler.MarkTaskDone)
 	r.Get("/api/tasks", handler.GetList)
 	r.Get("/api/nextdate", handler.NextDate)
 	r.Get("/api/task", handler.GetTask)
