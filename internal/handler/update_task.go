@@ -12,7 +12,7 @@ import (
 
 func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var t models.Task2
+	var t models.Task
 
 	if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)

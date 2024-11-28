@@ -19,11 +19,11 @@ func (h *Handler) GetList(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if tasks == nil {
-		tasks = []models.Task2{}
+		tasks = []models.Task{}
 	}
 
 	resp := struct {
-		Tasks []models.Task2 `json:"tasks"`
+		Tasks []models.Task `json:"tasks"`
 	}{
 		Tasks: tasks,
 	}

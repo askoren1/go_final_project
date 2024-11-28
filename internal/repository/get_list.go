@@ -5,7 +5,7 @@ import (
 	"github.com/askoren1/go_final_project/internal/models"
 )
 
-func (r *Repository) GetList() ([]models.Task2, error) {
+func (r *Repository) GetList() ([]models.Task, error) {
 	query := `SELECT id, date, title, comment, repeat FROM scheduler ORDER BY date ASC;`
 	rows, err := r.db.Query(query)
 	if err != nil {
@@ -13,10 +13,10 @@ func (r *Repository) GetList() ([]models.Task2, error) {
 	}
 	defer rows.Close()
 
-	var tasks []models.Task2
+	var tasks []models.Task
 
 	for rows.Next() {
-		task := models.Task2{}
+		task := models.Task{}
 
 		err := rows.Scan(&task.ID, &task.Date, &task.Title, &task.Comment, &task.Repeat)
 		if err != nil {

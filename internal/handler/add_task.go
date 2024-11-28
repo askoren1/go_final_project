@@ -4,21 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	nextdate "github.com/askoren1/go_final_project/internal/next_date"
+	"github.com/askoren1/go_final_project/internal/models"
 	"net/http"
 	"regexp"
 	"strconv"
 	"time"
 )
 
-type Task struct {
-	Date    string `json:"date"`
-	Title   string `json:"title"`
-	Comment string `json:"comment"`
-	Repeat  string `json:"repeat"`
-}
-
 func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
-	var t Task
+	var t models.Task
 	if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return

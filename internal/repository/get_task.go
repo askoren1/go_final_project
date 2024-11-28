@@ -6,9 +6,9 @@ import (
 	"strconv"
 )
 
-func (r *Repository) GetTaskByID(id string) (*models.Task2, error) {
+func (r *Repository) GetTaskByID(id string) (*models.Task, error) {
 
-	var task models.Task2
+	var task models.Task
 	var taskID int64
 
 	row := r.db.QueryRow("SELECT id, date, title, comment, repeat FROM scheduler WHERE id = ?", id)
