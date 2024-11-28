@@ -8,18 +8,19 @@ import (
 	"regexp"
 	"strconv"
 	"time"
-	)
+)
 
+// Функция  для обновления информации о задаче в базе данных
 func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var t models.Task
 
-	if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&t); err != nil { //Получение данных из запроса
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	if t.Title == "" {
+	if t.Title == "" { //Проверяем наличие заголовка задачи
 		response := map[string]string{"error": "Не указан заголовок задачи"}
 		json.NewEncoder(w).Encode(response)
 		return
@@ -46,6 +47,7 @@ func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	//Обработка даты
 	DateToday2 := time.Now().Format("20060102")
 	nowTime := time.Now()
 	var dateInTable string
@@ -78,15 +80,14 @@ func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	//Обновление задачи в базе данных
 	err := h.repo.UpdateTask(t.ID, dateInTable, t.Title, t.Comment, t.Repeat)
 	if err != nil {
-		// Возвращаем JSON с ошибкой
-		w.WriteHeader(http.StatusNotFound) // Устанавливаем код ответа 404
+		w.WriteHeader(http.StatusNotFound) // Возвращаем JSON с ошибкой
 		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
 		return
 	}
 
-	// Возвращаем JSON с сообщением об успехе
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusOK) // Возвращаем JSON с сообщением об успехе
 	json.NewEncoder(w).Encode(map[string]string{})
 }

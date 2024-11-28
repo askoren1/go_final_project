@@ -6,12 +6,13 @@ import (
 	nextdate "github.com/askoren1/go_final_project/internal/next_date"
 	"net/http"
 	"time"
-	)
+)
 
+// Функция для обработки запроса на отметку задачи как выполненной
 func (h *Handler) MarkTaskDone(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	idStr := r.URL.Query().Get("id")
+	idStr := r.URL.Query().Get("id") //Получение идентификатора задачи
 
 	if idStr == "" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -19,13 +20,13 @@ func (h *Handler) MarkTaskDone(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//Получение информации о задаче
 	task, err := h.repo.GetTaskByID(idStr)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"error": "Ошибка получения задачи: " + err.Error()})
 		return
 	}
-
 
 	if task == nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -50,11 +51,11 @@ func (h *Handler) MarkTaskDone(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(map[string]string{"error": "Ошибка вычисления следующей даты: " + err.Error()})
 			return
 		}
-	
+
 		err = h.repo.UpdateTask(idStr, nextDate, task.Title, task.Comment, task.Repeat)
 		if err != nil {
 			// Возвращаем JSON с ошибкой
-			w.WriteHeader(http.StatusNotFound) // Устанавливаем код ответа 404
+			w.WriteHeader(http.StatusNotFound)
 			json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
 			return
 		}

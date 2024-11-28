@@ -5,13 +5,14 @@ import (
 	"fmt"
 )
 
+// Функция DeleteTask для удаления записи о задаче из базы данных по указанному идентификатору
 func (r *Repository) DeleteTask(id string) error {
-	res, err := r.db.Exec("DELETE FROM scheduler WHERE Id = :Id", sql.Named("Id", id))
+	res, err := r.db.Exec("DELETE FROM scheduler WHERE Id = :Id", sql.Named("Id", id)) //SQL-запрос на удаление строки
 	if err != nil {
 		return fmt.Errorf("ошибка удаления задачи: %w", err)
 	}
 
-	rowsAffected, err := res.RowsAffected()
+	rowsAffected, err := res.RowsAffected() //Проверка количества затронутых строк
 	if err != nil {
 		return fmt.Errorf("ошибка получения количества затронутых строк: %w", err)
 	}

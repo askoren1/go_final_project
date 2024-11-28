@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// Функция для создания таблицы в базе данных для хранения информации о задачах
 func (r *Repository) CreateScheduler() error {
 	query := `CREATE TABLE IF NOT EXISTS scheduler (
 	   id INTEGER PRIMARY KEY AUTOINCREMENT,        

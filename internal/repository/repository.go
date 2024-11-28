@@ -4,6 +4,7 @@ import (
 	"database/sql"
 )
 
+// определяем структуру Repository, которая служит для взаимодействия с базой данных
 type Repository struct {
 	db *sql.DB
 }

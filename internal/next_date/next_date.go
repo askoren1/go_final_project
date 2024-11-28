@@ -7,22 +7,24 @@ import (
 	"time"
 )
 
+// Функция для вычисления следующей даты выполнения задачи, учитывая ее исходную дату и правило повторения
 func NextDate(now time.Time, date string, repeat string) (string, error) {
-	t, err := time.Parse("20060102", date)
+	t, err := time.Parse("20060102", date) //Парсинг исходной даты
 	if err != nil {
 		return "", err
 	}
 
+	//Обработка правила повторения
 	switch repeat {
-	case "":
+	case "": //Пустое правило
 		return "", errors.New("no repeat rule specified")
-	case "y":
+	case "y": //Ежегодное повторение
 		t = t.AddDate(1, 0, 0)
 		for t.Before(now) {
 			t = t.AddDate(1, 0, 0)
 		}
 		return t.Format("20060102"), nil
-	default:
+	default: //Повторное через N дней
 		if len(repeat) > 1 && repeat[0] == 'd' {
 			days, err := strconv.Atoi(repeat[2:])
 			if err != nil || days > 400 {

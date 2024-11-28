@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 )
 
+// Инициализациия базы данных
 func Migration(repo *repository.Repository) { //функция для создания таблицы в базе данных, если она еще не существует
 	appPath, err := os.Executable() //Получаем путь к исполняемому файлу приложения
 	if err != nil {

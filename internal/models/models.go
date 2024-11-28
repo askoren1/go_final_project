@@ -1,5 +1,6 @@
 package models
 
+// Структура определяет модель данных для представления задачи
 type Task struct {
 	ID      string `json:"id"`
 	Date    string `json:"date"`

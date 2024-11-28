@@ -3,17 +3,18 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
-	nextdate "github.com/askoren1/go_final_project/internal/next_date"
 	"github.com/askoren1/go_final_project/internal/models"
+	nextdate "github.com/askoren1/go_final_project/internal/next_date"
 	"net/http"
 	"regexp"
 	"strconv"
 	"time"
 )
 
+// обработчик HTTP-запроса для добавления новой задачи в систему
 func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
 	var t models.Task
-	if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&t); err != nil { //Декодирование JSON в структуру models.Task
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -45,12 +46,14 @@ func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
 
 	}
 
+	//Проверка заголовка задачи
 	if t.Title == "" { // проверка title на пустоту
 		response := map[string]string{"error": "Не указан заголовок задачи"}
 		json.NewEncoder(w).Encode(response)
 		return
 	}
 
+	//Обработка даты
 	// DateToday2 - сегодня, string
 	// nowTime - сегодня, time.Time
 	// t.Date - входное значение даты, string
@@ -59,9 +62,6 @@ func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
 
 	DateToday2 := time.Now().Format("20060102")
 	nowTime := time.Now()
-
-	//DateToday2 := now.Format("20060102") // Используем переданное значение now
-	//nowTime := now                       // Используем переданное значение now
 
 	var dateInTable string
 	layout := "20060102"
@@ -89,6 +89,7 @@ func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// Добавление задачи в базу данных
 	id, err := h.repo.AddTask(dateInTable, t.Title, t.Comment, t.Repeat)
 
 	if err != nil {
@@ -96,6 +97,7 @@ func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Формирование ответа
 	response := map[string]string{"id": fmt.Sprintf("%d", id)}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	json.NewEncoder(w).Encode(response)
