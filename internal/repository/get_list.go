@@ -6,7 +6,7 @@ import (
 )
 
 func (r *Repository) GetList() ([]models.Task, error) {
-	query := `SELECT id, date, title, comment, repeat FROM scheduler ORDER BY date ASC;`
+	query := `SELECT id, date, title, comment, repeat FROM scheduler ORDER BY date ASC LIMIT 30;`
 	rows, err := r.db.Query(query)
 	if err != nil {
 		return nil, err

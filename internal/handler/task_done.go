@@ -6,7 +6,7 @@ import (
 	nextdate "github.com/askoren1/go_final_project/internal/next_date"
 	"net/http"
 	"time"
-)
+	)
 
 func (h *Handler) MarkTaskDone(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -51,11 +51,11 @@ func (h *Handler) MarkTaskDone(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	
-		// Обновляем дату задачи
-		err = h.repo.UpdateDate(idStr, nextDate)
+		err = h.repo.UpdateTask(idStr, nextDate, task.Title, task.Comment, task.Repeat)
 		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(w).Encode(map[string]string{"error": "Ошибка обновления даты задачи: " + err.Error()})
+			// Возвращаем JSON с ошибкой
+			w.WriteHeader(http.StatusNotFound) // Устанавливаем код ответа 404
+			json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
 			return
 		}
 	}

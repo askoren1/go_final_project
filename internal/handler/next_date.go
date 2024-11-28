@@ -7,16 +7,19 @@ import (
 	"time"
 )
 
-const DateToday = "20240126"
+const DateToday = "20240126" //эту строку нужно закомментировать для использования актуальной даты
 
 func (h *Handler) NextDate(w http.ResponseWriter, r *http.Request) {
-	layout := "20060102"
-	nowTime, _ := time.Parse(layout, DateToday)
+	layout := "20060102" //эту строку нужно закомментировать для использования актуальной даты
+	nowTime, _ := time.Parse(layout, DateToday) //эту строку нужно закомментировать для использования актуальной даты
+	// nowTime := time.Now().Truncate(24 * time.Hour).UTC() //эту строку нужно раскомментировать для использования актуальной даты
+
+
 	dateStr := r.FormValue("date")
 	repeatStr := r.FormValue("repeat")
 
 	if dateStr == "" {
-		dateStr = DateToday
+		dateStr = time.Now().Format("20060102")
 	}
 
 	date, err := nextdate.NextDate(nowTime, dateStr, repeatStr)
