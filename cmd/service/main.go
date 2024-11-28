@@ -1,12 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"github.com/go-chi/chi/v5"
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 
 	"github.com/askoren1/go_final_project/internal/db"
 	"github.com/askoren1/go_final_project/internal/handler"
@@ -15,9 +13,10 @@ import (
 
 func main() {
 
-	db := db.New()             //Инициализируем базу данных
-	repo := repository.New(db) //Создаем репозиторий, который отвечает за взаимодействие с базой данных
-	migration(repo)
+	dbConn := db.New() //Инициализируем базу данных
+	defer db.Close(dbConn)
+	repo := repository.New(dbConn) //Создаем репозиторий, который отвечает за взаимодействие с базой данных
+	db.Migration(repo)
 
 	handler := handler.New(repo)
 
@@ -34,30 +33,8 @@ func main() {
 	port := os.Getenv("TODO_PORT")
 	if port == "" {
 		port = "8080" // Порт по умолчанию
-}
+	}
 	if err := http.ListenAndServe(":"+port, r); err != nil {
 		log.Fatal(err)
-	}
-}
-
-func migration(repo *repository.Repository) { //функция для создания таблицы в базе данных, если она еще не существует
-	appPath, err := os.Executable() //Получаем путь к исполняемому файлу приложения
-	if err != nil {
-		log.Fatal(err)
-	}
-	dbFile := filepath.Join(filepath.Dir(appPath), "scheduler.db") // Конструируем полный путь к файлу БД scheduler.db
-
-	_, err = os.Stat(dbFile) //Проверяем, существует ли файл базы данных по указанному пути
-	var install bool
-	if err != nil {
-		install = true
-	}
-
-	if install {
-		if err := repo.CreateScheduler(); err != nil { //Вызываем метод CreateScheduler() у репозитория для создания таблицы
-			log.Fatal(err)
-		}
-	} else {
-		fmt.Println("База данных уже существует.")
 	}
 }

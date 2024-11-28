@@ -8,8 +8,7 @@ import (
 	"regexp"
 	"strconv"
 	"time"
-	//"fmt"
-)
+	)
 
 func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")

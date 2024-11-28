@@ -2,7 +2,7 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
+
 	nextdate "github.com/askoren1/go_final_project/internal/next_date"
 	"net/http"
 	"time"
@@ -26,14 +26,12 @@ func (h *Handler) MarkTaskDone(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(task)
 
 	if task == nil {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{"error": "Задача не найдена"})
 		return
 	}
-	fmt.Println(task.Repeat)
 
 	if task.Repeat == "" {
 		// Одноразовая задача - удаляем
@@ -52,7 +50,7 @@ func (h *Handler) MarkTaskDone(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(map[string]string{"error": "Ошибка вычисления следующей даты: " + err.Error()})
 			return
 		}
-		fmt.Println(nextDate)
+	
 		// Обновляем дату задачи
 		err = h.repo.UpdateDate(idStr, nextDate)
 		if err != nil {
