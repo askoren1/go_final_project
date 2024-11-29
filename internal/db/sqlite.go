@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"log"
+	"os"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -10,7 +11,12 @@ import (
 // Создание нового подключения
 func New() *sql.DB { //объявляем функцию для создания нового подключения к базе данных SQLite
 
-	db, err := sql.Open("sqlite3", "scheduler.db") //Открываем соединение с базой данных SQLite, подготавливаем драйвер
+	dbPath := os.Getenv("TODO_DBFILE") // Получаем путь из переменной окружения
+	if dbPath == "" {
+		dbPath = "scheduler.db" // Путь по умолчанию
+	}
+
+	db, err := sql.Open("sqlite3", dbPath) //Открываем соединение с базой данных SQLite, подготавливаем драйвер
 	if err != nil {
 		log.Fatal("init db", err)
 	}

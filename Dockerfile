@@ -1,6 +1,7 @@
 FROM golang:1.23
 WORKDIR /app
 ENV TODO_PORT=7540
+ENV TODO_DBFILE=/app/mydatabase.db
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .  
