@@ -2,12 +2,14 @@ package db
 
 import (
 	"fmt"
-	_ "github.com/mattn/go-sqlite3"
 	"log"
 
-	"github.com/askoren1/go_final_project/internal/repository"
+	_ "github.com/mattn/go-sqlite3"
+
 	"os"
 	"path/filepath"
+
+	"github.com/askoren1/go_final_project/internal/repository"
 )
 
 // Инициализациия базы данных

@@ -3,13 +3,16 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/askoren1/go_final_project/internal/models"
-	nextdate "github.com/askoren1/go_final_project/internal/next_date"
 	"net/http"
 	"regexp"
 	"strconv"
 	"time"
+
+	"github.com/askoren1/go_final_project/internal/models"
+	nextdate "github.com/askoren1/go_final_project/internal/next_date"
 )
+
+const Layout = "20060102"
 
 // обработчик HTTP-запроса для добавления новой задачи в систему
 func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
@@ -54,22 +57,21 @@ func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//Обработка даты
-	// DateToday2 - сегодня, string
+	// dateToday - сегодня, string
 	// nowTime - сегодня, time.Time
 	// t.Date - входное значение даты, string
 	// date2 - входное значение даты, time.Time
 	// dateInTable - дата для передачи в таблицу, string
 
-	DateToday2 := time.Now().Format("20060102")
+	dateToday := time.Now().Format(Layout)
 	nowTime := time.Now()
 
 	var dateInTable string
-	layout := "20060102"
 
 	if t.Date == "" || t.Date == "today" { // проверка date на пустоту
-		dateInTable = DateToday2
+		dateInTable = dateToday
 	} else { // проверка даты на корректность
-		date2, err := time.Parse(layout, t.Date)
+		date2, err := time.Parse(Layout, t.Date)
 		if err != nil {
 			response := map[string]string{"error": "Некорректное значение даты"}
 			json.NewEncoder(w).Encode(response)
@@ -79,7 +81,7 @@ func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
 		if nowTime.Truncate(24 * time.Hour).UTC().After(date2) { //замена даты, если дата задачи меньше сегодняшней
 
 			if t.Repeat == "" {
-				dateInTable = DateToday2
+				dateInTable = dateToday
 			} else {
 				dateInTable, _ = nextdate.NextDate(nowTime, t.Date, t.Repeat)
 			}

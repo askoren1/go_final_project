@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/go-chi/chi/v5"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/go-chi/chi/v5"
 
 	"github.com/askoren1/go_final_project/internal/db"
 	"github.com/askoren1/go_final_project/internal/handler"

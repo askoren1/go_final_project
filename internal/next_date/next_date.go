@@ -7,9 +7,11 @@ import (
 	"time"
 )
 
+const layout = "20060102"
+
 // Функция для вычисления следующей даты выполнения задачи, учитывая ее исходную дату и правило повторения
 func NextDate(now time.Time, date string, repeat string) (string, error) {
-	t, err := time.Parse("20060102", date) //Парсинг исходной даты
+	t, err := time.Parse(layout, date) //Парсинг исходной даты
 	if err != nil {
 		return "", err
 	}
@@ -23,7 +25,7 @@ func NextDate(now time.Time, date string, repeat string) (string, error) {
 		for t.Before(now) {
 			t = t.AddDate(1, 0, 0)
 		}
-		return t.Format("20060102"), nil
+		return t.Format(layout), nil
 	default: //Повторное через N дней
 		if len(repeat) > 1 && repeat[0] == 'd' {
 			days, err := strconv.Atoi(repeat[2:])
@@ -34,7 +36,7 @@ func NextDate(now time.Time, date string, repeat string) (string, error) {
 			for t.Before(now) {
 				t = t.AddDate(0, 0, days)
 			}
-			return t.Format("20060102"), nil
+			return t.Format(layout), nil
 		}
 		return "", fmt.Errorf("invalid repeat rule: %s", repeat)
 	}

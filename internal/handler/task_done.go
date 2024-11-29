@@ -3,9 +3,10 @@ package handler
 import (
 	"encoding/json"
 
-	nextdate "github.com/askoren1/go_final_project/internal/next_date"
 	"net/http"
 	"time"
+
+	nextdate "github.com/askoren1/go_final_project/internal/next_date"
 )
 
 // Функция для обработки запроса на отметку задачи как выполненной

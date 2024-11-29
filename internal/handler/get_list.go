@@ -2,9 +2,10 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/askoren1/go_final_project/internal/models"
 	"log"
 	"net/http"
+
+	"github.com/askoren1/go_final_project/internal/models"
 )
 
 // обработчик HTTP-запроса для получения списка всех задач

@@ -2,8 +2,9 @@ package repository
 
 import (
 	"database/sql"
-	"github.com/askoren1/go_final_project/internal/models"
 	"strconv"
+
+	"github.com/askoren1/go_final_project/internal/models"
 )
 
 // Функция для получения задачи по ее идентификатору (ID) из базы данных
