@@ -8,15 +8,12 @@ import (
 	nextdate "github.com/askoren1/go_final_project/internal/next_date"
 )
 
-const DateToday = "20240126" //эту строку нужно закомментировать для использования актуальной даты
-
 // Функция NextDate для вычисления следующей даты выполнения задачи на основе заданной даты и правила повторения
 func (h *Handler) NextDate(w http.ResponseWriter, r *http.Request) {
 
-	nowTime, _ := time.Parse(Layout, DateToday) //эту строку нужно закомментировать для использования актуальной даты
-	// nowTime := time.Now().Truncate(24 * time.Hour).UTC() //эту строку нужно раскомментировать для использования актуальной даты
-
 	// Получение данных из запроса
+	nowTimeStr := r.FormValue("now")
+	nowTime, _ := time.Parse(Layout, nowTimeStr)	
 	dateStr := r.FormValue("date")
 	repeatStr := r.FormValue("repeat")
 
